@@ -5,15 +5,13 @@ in vec3 a_colour; // vertex colour RGB
 
 uniform mat4 u_modelMatrix; // 4D Matrix
 
-// Mutliply all 3-4 matrices then return the one.
-
 out vec3 v_colour; // to fragment shader
 
 void main() {
 	v_colour = a_colour;
-
+	
 	// pad the vertex to a homogeneous 3D point
-    gl_Position = a_position;
+    gl_Position = u_modelMatrix * a_position;
 
 }
 
