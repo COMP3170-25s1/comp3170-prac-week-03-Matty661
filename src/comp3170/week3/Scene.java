@@ -91,7 +91,7 @@ public class Scene {
 		rotationMatrix(0, rotationMatrix);
 		scaleMatrix(0.1f, 0.1f, scaleMatrix);
 		
-		modelMatrix.mul(translationMatrix).mul(rotationMatrix).mul(scaleMatrix);
+		modelMatrix.mul(translationMatrix).mul(rotationMatrix).mul(scaleMatrix); // T R S Order
 	}
 
 	public void draw() {
