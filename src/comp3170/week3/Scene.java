@@ -133,8 +133,9 @@ public class Scene {
 	 */
 
 	public static Matrix4f rotationMatrix(float angle, Matrix4f dest) {
-
-		// TODO: Your code here
+		dest.identity();
+		
+		// Multiple matrices needed.
 
 		return dest;
 	}
