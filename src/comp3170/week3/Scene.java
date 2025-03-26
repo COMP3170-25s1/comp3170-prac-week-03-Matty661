@@ -1,6 +1,7 @@
 package comp3170.week3;
 
 import static org.lwjgl.opengl.GL11.GL_FILL;
+
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -35,6 +36,9 @@ public class Scene {
 	private Matrix4f rotationMatrix = new Matrix4f();
 	private Matrix4f scaleMatrix = new Matrix4f();
 	
+	private final float movementSpeed = 8f; 
+	private final float scale = 0.1f; 
+	private final double rotationRate = (3.14*2) / 6; 
 	
 	
 	private Shader shader;
@@ -87,7 +91,7 @@ public class Scene {
 
 		indexBuffer = GLBuffers.createIndexBuffer(indices);
 	
-		translationMatrix(0.0f, 0.0f, translationMatrix);
+		translationMatrix(0.8f, 0.0f, translationMatrix);
 		rotationMatrix(0, rotationMatrix);
 		scaleMatrix(0.1f, 0.1f, scaleMatrix);
 		
@@ -111,6 +115,15 @@ public class Scene {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
 
+	}
+	
+	
+	public void update(float deltaTime) {
+		
+		float movement = movementSpeed * deltaTime;
+		
+		float rotation = (float) rotationRate * deltaTime; 
+		modelMatrix.translate(0.0f, movement, 0.f).rotateZ(rotation);
 	}
 
 	/**
@@ -152,8 +165,12 @@ public class Scene {
 
 	public static Matrix4f rotationMatrix(float angle, Matrix4f dest) {
 		
-		// Multiple matrices needed.
-
+				//	   [ cos() sin() 0 0 ]
+				// R(a) = [ -sin() cos() 0 0 ]
+			    //     [ 0 0 0 0  ]
+				//     [ 0 0 0 1  ]
+		
+		
 		dest.m00(Math.cos(angle));
 		dest.m01(Math.sin(angle));
 		
@@ -176,13 +193,10 @@ public class Scene {
 
 	public static Matrix4f scaleMatrix(float sx, float sy, Matrix4f dest) {
 
-		
-		
-			//	   [ sx 0 0 0 ]
-			// T = [ 0 sy 0 0 ]
-		    //     [ 0 0 0 0  ]
-			//     [ 0 0 0 1  ]
-		
+			//	   			[ sx 0 0 0 ]
+			// S(sx, sy) =  [ 0 sy 0 0 ]
+		    //     			[ 0 0 0 0  ]
+			//    	 		[ 0 0 0 1  ]
 		
 		dest.m00(sx);
 		dest.m11(sy);
